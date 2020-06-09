@@ -398,6 +398,8 @@ class IndiClient(PyIndi.BaseClient):
         self.gain_photo = dict_params['gan_f']
         self.cant_f = dict_params['cant_f']
         self.counter_dir = dict_params['counter_dir']
+        if not os.path.exists(path_fotos_secuencia+"/"+str(int(self.counter_dir))):
+            os.makedirs(path_fotos_secuencia+"/"+str(int(self.counter_dir)))
         dict_params['counter_dir'] = int(dict_params['counter_dir']) + 1
         a_file = open(tabla_params, "w")
         writer = csv.writer(a_file)
