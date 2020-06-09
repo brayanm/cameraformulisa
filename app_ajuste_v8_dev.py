@@ -226,7 +226,7 @@ class IndiClient(PyIndi.BaseClient):
                 self.count_sequence = self.count_sequence + 1
                 if self.count_sequence > int(self.cant_f):
                     self.notcontinue_seq = True
-                while self.notcontinue_seq:
+                while self.notcontinue_seq==True:
                     display.fill((0,0,0))
                     text1 = "Finalizado"
                     surf_text1 = font.render(text1, True, (255,0,0))
