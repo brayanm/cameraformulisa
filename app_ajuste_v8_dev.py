@@ -176,14 +176,14 @@ class IndiClient(PyIndi.BaseClient):
             display.blit(text_back , (700+1,400+15))
 
             #secuencia
-            text_sec = smallfont2.render('Secuencia' , True , color)
-            if 700 <= mouse[0] <= 700+100 and 50 <= mouse[1] <= 50+70: 
-                pygame.draw.rect(display,color_light,[700,400,100,70]) 
+            text_sec = smallfont3.render('Secuencia' , True , color)
+            if 0 <= mouse[0] <= 0+100 and 400 <= mouse[1] <= 400+70: 
+                pygame.draw.rect(display,color_light,[0,400,120,70]) 
                   
             else: 
-                pygame.draw.rect(display,color_dark,[700,400,100,70]) 
+                pygame.draw.rect(display,color_dark,[0,400,120,70]) 
             # superimposing the text onto our button 
-            display.blit(text_sec , (700+1,50+15))     
+            display.blit(text_sec , (0+1,400+15))     
 
             pygame.display.flip()
             pygame.display.update()
@@ -821,7 +821,8 @@ if __name__ == '__main__':
     width = display.get_width() 
     height = display.get_height() 
     smallfont = pygame.font.SysFont('Corbel',60)
-    smallfont2 = pygame.font.SysFont('Corbel',48) 
+    smallfont2 = pygame.font.SysFont('Corbel',48)
+    smallfont3 = pygame.font.SysFont('Corbel',30) 
     text1_p = smallfont.render('Cámara Secundaria' , True , color)
     text2_p = smallfont.render('Cámara Principal' , True , color)
     text3_p = smallfont.render('Configuración' , True , color)
