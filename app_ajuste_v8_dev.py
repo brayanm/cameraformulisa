@@ -379,7 +379,7 @@ class IndiClient(PyIndi.BaseClient):
         self.takeExposure(3)
     
     def click_back_stream(self):
-        self.notcontinue_seq
+        self.notcontinue_seq = False
         self.flag = True
         self.sequence = False
         print("click back stream on")
