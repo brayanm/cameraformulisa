@@ -904,13 +904,13 @@ if __name__ == '__main__':
                     input_box_exp_s = InputBox(380, 60, 70, 32, 'exp_s')
                     input_box_gan_f = InputBox(160, 120, 70, 32, 'gan_f')
                     input_box_exp_f = InputBox(380, 120, 70, 32, 'exp_f')
-                    input_box_df = InputBox(570, 120, 70, 32, 'df')
-                    input_box_cant_f = InputBox(570, 60, 70, 32, 'cant_f')
+                    input_box_df = InputBox(590, 120, 70, 32, 'df')
+                    input_box_cant_f = InputBox(590, 60, 70, 32, 'cant_f')
                     input_box_gan_s_2 = InputBox(160, 230, 70, 32, 'gan_s_2')
                     input_box_exp_s_2 = InputBox(380, 230, 70, 32, 'exp_s_2')
                     input_box_gan_f_2 = InputBox(160, 290, 70, 32, 'gan_f_2')
                     input_box_exp_f_2 = InputBox(380, 290, 70, 32, 'exp_f_2')
-                    input_box_df_2 = InputBox(570, 290, 70, 32, 'df_2')
+                    input_box_df_2 = InputBox(590, 290, 70, 32, 'df_2')
                     input_boxes = [input_box_gan_s, input_box_exp_s, input_box_gan_f, input_box_exp_f, input_box_df, input_box_gan_s_2, input_box_exp_s_2, input_box_gan_f_2, input_box_exp_f_2, input_box_df_2, input_box_cant_f]
                     done = False
                     
@@ -1041,7 +1041,7 @@ if __name__ == '__main__':
                         surf_text_gan_f = FONT.render("Gan Foto", True, (255,0,0))
                         surf_text_exp_f = FONT.render("Exp Foto", True, (255,0,0))
                         surf_text_df = FONT.render("DF Foto", True, (255,0,0))
-                        surf_text_cant_f = FONT.render("Cant Fotos", True, (255,0,0))
+                        surf_text_cant_f = FONT.render("Secuencias", True, (255,0,0))
                         display.blit(surf_text_cam_p, (300, 30))
                         display.blit(surf_text_gan_s, (30, 60))
                         display.blit(surf_text_exp_s, (250, 60))
