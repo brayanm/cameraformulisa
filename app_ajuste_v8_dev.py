@@ -48,6 +48,9 @@ if not os.path.exists(path_fotos_originales):
 if not os.path.exists(path_fotos_originales_pi):
     os.makedirs(path_fotos_originales_pi)
 
+if not os.path.exists(path_fotos_secuencia):
+    os.makedirs(path_fotos_secuencia)
+
 DEVICE_NAME = "ZWO CCD ASI290MM"
 #DEVICE_NAME = 'CCD Simulator'
 '''tabla_ajuste = '/media/usb/tabla_ajuste/tabla_ajuste.csv'
@@ -192,7 +195,7 @@ class IndiClient(PyIndi.BaseClient):
                         self.connected = False
                         print(self.connected)
                         #self.disconnectServer()
-                    elif if 700 <= mouse[0] <= 700+100 and 50 <= mouse[1] <= 50+70:
+                    elif 700 <= mouse[0] <= 700+100 and 50 <= mouse[1] <= 50+70:
                         print('secuencia')
                         self.click_sequence()
                     elif self.first_click==False and (130 <= mouse[0] <= 130+540 and 190 <= mouse[1] <= 190+150):
@@ -902,12 +905,13 @@ if __name__ == '__main__':
                     input_box_gan_f = InputBox(160, 120, 70, 32, 'gan_f')
                     input_box_exp_f = InputBox(380, 120, 70, 32, 'exp_f')
                     input_box_df = InputBox(570, 120, 70, 32, 'df')
+                    input_box_cant_f = InputBox(570, 60, 70, 32, 'cant_f')
                     input_box_gan_s_2 = InputBox(160, 230, 70, 32, 'gan_s_2')
                     input_box_exp_s_2 = InputBox(380, 230, 70, 32, 'exp_s_2')
                     input_box_gan_f_2 = InputBox(160, 290, 70, 32, 'gan_f_2')
                     input_box_exp_f_2 = InputBox(380, 290, 70, 32, 'exp_f_2')
                     input_box_df_2 = InputBox(570, 290, 70, 32, 'df_2')
-                    input_boxes = [input_box_gan_s, input_box_exp_s, input_box_gan_f, input_box_exp_f, input_box_df, input_box_gan_s_2, input_box_exp_s_2, input_box_gan_f_2, input_box_exp_f_2, input_box_df_2]
+                    input_boxes = [input_box_gan_s, input_box_exp_s, input_box_gan_f, input_box_exp_f, input_box_df, input_box_gan_s_2, input_box_exp_s_2, input_box_gan_f_2, input_box_exp_f_2, input_box_df_2, input_box_cant_f]
                     done = False
                     
                     with open(tabla_params, mode='r') as infile:
@@ -924,6 +928,7 @@ if __name__ == '__main__':
                     input_box_gan_f_2.set_text(str(dict_params['gan_f_2']))
                     input_box_exp_f_2.set_text(str(dict_params['exp_f_2']))
                     input_box_df_2.set_text(str(int(dict_params['df_2'])))
+                    input_box_cant_f.set_text(str(int(dict_params['cant_f'])))
                     
                     
                     while not done:
@@ -944,6 +949,7 @@ if __name__ == '__main__':
                                     dict_params['gan_f_2'] = dict_params['gan_f_2'] if not input_box_gan_f_2.get_text() else input_box_gan_f_2.get_text()
                                     dict_params['exp_f_2'] = dict_params['exp_f_2'] if not input_box_exp_f_2.get_text() else input_box_exp_f_2.get_text()
                                     dict_params['df_2'] = dict_params['df_2'] if not input_box_df_2.get_text() else input_box_df_2.get_text()
+                                    dict_params['cant_f'] = dict_params['cant_f'] if not input_box_cant_f.get_text() else input_box_cant_f.get_text()
                                     a_file = open(tabla_params, "w")
                                     writer = csv.writer(a_file)
                                     for key, value in dict_params.items():
