@@ -32,6 +32,7 @@ path_fotos_ajustadas = '/media/usb/fotos_ajustadas'
 path_fotos_originales = '/media/usb/fotos_originales'
 path_fotos_ajustadas_pi = '/media/usb/fotos_ajustadas_pi'
 path_fotos_originales_pi = '/media/usb/fotos_originales_pi'
+path_fotos_secuencia = '/media/usb/secuencias_zwo'
 #path_fotos_ajustadas = '/home/pi/Documents/capturas/ajustadas'
 #path_fotos_originales = '/home/pi/Documents/capturas/originales'
 
@@ -83,6 +84,10 @@ class IndiClient(PyIndi.BaseClient):
     flag = False
     first_click = False
     connected = True
+    sequence = False
+    count_sequence = 0
+    cant_f = 0
+    counter_dir = 0
 
     def __init__(self):
         super(IndiClient, self).__init__()
@@ -157,6 +162,7 @@ class IndiClient(PyIndi.BaseClient):
             display.blit(surf_text2, (5, 5))
             mouse = pygame.mouse.get_pos()
             print(mouse)
+            #menu
             text_back = smallfont2.render('MENU' , True , color)
             if 700 <= mouse[0] <= 700+100 and 400 <= mouse[1] <= 400+70: 
                 pygame.draw.rect(display,color_light,[700,400,100,70]) 
@@ -165,6 +171,17 @@ class IndiClient(PyIndi.BaseClient):
                 pygame.draw.rect(display,color_dark,[700,400,100,70]) 
             # superimposing the text onto our button 
             display.blit(text_back , (700+1,400+15))
+
+            #secuencia
+            text_sec = smallfont2.render('Secuencia' , True , color)
+            if 700 <= mouse[0] <= 700+100 and 50 <= mouse[1] <= 50+70: 
+                pygame.draw.rect(display,color_light,[700,400,100,70]) 
+                  
+            else: 
+                pygame.draw.rect(display,color_dark,[700,400,100,70]) 
+            # superimposing the text onto our button 
+            display.blit(text_sec , (700+1,50+15))     
+
             pygame.display.flip()
             pygame.display.update()
             for event in pygame.event.get():
@@ -175,6 +192,9 @@ class IndiClient(PyIndi.BaseClient):
                         self.connected = False
                         print(self.connected)
                         #self.disconnectServer()
+                    elif if 700 <= mouse[0] <= 700+100 and 50 <= mouse[1] <= 50+70:
+                        print('secuencia')
+                        self.click_sequence()
                     elif self.first_click==False and (130 <= mouse[0] <= 130+540 and 190 <= mouse[1] <= 190+150):
                         self.first_click = True
                     elif self.first_click==True:
@@ -184,6 +204,32 @@ class IndiClient(PyIndi.BaseClient):
                     pygame.display.quit()
 
             self.takeExposure(self.exposure_time_stream)
+        elif self.sequence == True:
+            blobfile=BytesIO(img)
+            hdulist=pyfits.open(blobfile)
+            scidata = hdulist[0].data
+            print(scidata.shape)
+            w = scidata.shape[0]
+            h = scidata.shape[1]      
+            with open(tabla_params, mode='r') as infile:
+                reader = csv.reader(infile)
+                dict_params = {str(rows[0]):float(rows[1]) for rows in reader} 
+            self.exposure_time_photo = dict_params['exp_f'] 
+            dir_seq = path_fotos_secuencia+"/"+str(int(self.counter_dir))  
+            if int(self.count_sequence) <= int(self.cant_f):
+                hdulist.writeto(dir_seq+"/%s.fit" % str(self.count_sequence))
+                self.count_sequence = self.count_sequence + 1
+                while self.count_sequence > int(self.cant_f):
+                    display.fill((0,0,0))
+                    text1 = "Finalizado"
+                    surf_text1 = font.render(text1, True, (255,0,0))
+                    display.blit(surf_text1 , (700+1,50+15))     
+                    pygame.display.update()
+                    for event in pygame.event.get():
+                        if event.type == pygame.MOUSEBUTTONUP:
+                            print("click")
+                            self.click_back_stream()
+                self.takeExposure(self.exposure_time_photo)
         elif self.stream_on == False and self.first_exposure==False:
             self.flag = False
             blobfile=BytesIO(img)
@@ -261,6 +307,10 @@ class IndiClient(PyIndi.BaseClient):
             surf_text2 = font.render(text2, True, (255,0,0))
             display.blit(surf_text1, (10, 30))
             display.blit(surf_text2, (10, 60))
+            if self.sequence==True:
+                text_c_s = str(self.count_sequence)+" de "+str(self.cant_f)
+                surf_textc = font.render(text_c_s, True, (255,0,0))
+                display.blit(surf_textc, (10, 90))
             pygame.display.update()
     def newText(self, tvp):
         self.logger.info("new Text "+ tvp.name + " for device "+ tvp.device)
@@ -323,6 +373,7 @@ class IndiClient(PyIndi.BaseClient):
     
     def click_back_stream(self):
         self.flag = True
+        self.sequence = False
         print("click back stream on")
         self.stream_on = True
         #CCD_CONTROLS
@@ -332,6 +383,28 @@ class IndiClient(PyIndi.BaseClient):
         self.sendNewNumber(gain)
         
         self.takeExposure(self.exposure_time_stream)
+
+    def click_sequence(self):
+        self.stream_on = False
+        self.sequence = True
+        self.count_sequence = 1
+        with open(tabla_params, mode='r') as infile:
+            reader = csv.reader(infile)
+            dict_params = {str(rows[0]):float(rows[1]) for rows in reader}
+        self.exposure_time_photo = dict_params['exp_f']
+        self.gain_photo = dict_params['gan_f']
+        self.cant_f = dict_params['cant_f']
+        self.counter_dir = dict_params['counter_dir']
+        dict_params['counter_dir'] = int(dict_params['counter_dir']) + 1
+        a_file = open(tabla_params, "w")
+        writer = csv.writer(a_file)
+        for key, value in dict_params.items():
+            writer.writerow([key, value])
+        a_file.close()
+        gain = self.device.getNumber("CCD_CONTROLS")
+        gain[0].value = self.gain_photo
+        self.sendNewNumber(gain)
+        self.takeExposure(self.exposure_time_photo)
         
     def disconnect_s(self):
         return self.connected
