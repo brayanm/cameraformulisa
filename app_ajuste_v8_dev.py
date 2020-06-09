@@ -15,7 +15,7 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 from fractions import Fraction
 from numpy import copy
-from pygame_vkeyboard import *
+#from pygame_vkeyboard import *
 
 
 '''os.environ['SDL_FBDEV'] = "/dev/fb0"
@@ -838,14 +838,6 @@ if __name__ == '__main__':
     FONT = pygame.font.Font(None, 32)
     text = ""
     running = True
-    model = ['123', '456', '789', '0']
-    layout = VKeyboardLayout(model)
-    keyboard = VKeyboard(display,
-                                 on_key_event,
-                                 layout,
-                                 renderer=VKeyboardRenderer.DARK,
-                                 show_text=True,
-                                 joystick_navigation=False)
     box_active = False
     number_input = ''
     while running:
@@ -1216,25 +1208,6 @@ if __name__ == '__main__':
                         #pygame.display.update(rects)
                         #pygame.display.update()
 
-
-                        '''while box_active == True:
-                            print('si')
-                            display.fill((0, 0, 0))
-                            events = pygame.event.get()
-                            keyboard.update(events)
-                            rects = keyboard.draw(display)
-                            #keyboard.draw(display) 
-                            #pygame.display.flip()
-                            tx = keyboard.get_text()
-                            x = tx.split(" ")
-                            if len(x) >= 2:
-                                inptbox.active = False
-                                box_active = False
-                                inptbox.set_text(x[0])
-                                keyboard.set_text('')
-                            pygame.display.update(rects)
-                            #pygame.display.update()
-                            #pygame.display.flip()'''
                         clock.tick(30)
         mouse = pygame.mouse.get_pos() 
           
