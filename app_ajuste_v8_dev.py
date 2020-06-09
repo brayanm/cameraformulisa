@@ -1041,6 +1041,7 @@ if __name__ == '__main__':
                         surf_text_gan_f = FONT.render("Gan Foto", True, (255,0,0))
                         surf_text_exp_f = FONT.render("Exp Foto", True, (255,0,0))
                         surf_text_df = FONT.render("DF Foto", True, (255,0,0))
+                        surf_text_cant_f = FONT.render("Cant Fotos", True, (255,0,0))
                         display.blit(surf_text_cam_p, (300, 30))
                         display.blit(surf_text_gan_s, (30, 60))
                         display.blit(surf_text_exp_s, (250, 60))
@@ -1053,6 +1054,7 @@ if __name__ == '__main__':
                         display.blit(surf_text_gan_f, (30, 290))
                         display.blit(surf_text_exp_f, (250, 290))
                         display.blit(surf_text_df, (470, 290))
+                        display.blit(surf_text_cant_f, (470, 60))
                         #back menu botton
                         text_back = smallfont2.render('MENU' , True , color)
                         if 700 <= mouse[0] <= 700+100 and 400 <= mouse[1] <= 400+70: 
