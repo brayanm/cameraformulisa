@@ -91,6 +91,7 @@ class IndiClient(PyIndi.BaseClient):
     count_sequence = 0
     cant_f = 0
     counter_dir = 0
+    notcontinue_seq = False
 
     def __init__(self):
         super(IndiClient, self).__init__()
@@ -208,6 +209,7 @@ class IndiClient(PyIndi.BaseClient):
 
             self.takeExposure(self.exposure_time_stream)
         elif self.sequence == True:
+            self.notcontinue_seq = False
             blobfile=BytesIO(img)
             hdulist=pyfits.open(blobfile)
             scidata = hdulist[0].data
@@ -222,15 +224,17 @@ class IndiClient(PyIndi.BaseClient):
             if int(self.count_sequence) <= int(self.cant_f):
                 hdulist.writeto(dir_seq+"/%s.fit" % str(self.count_sequence))
                 self.count_sequence = self.count_sequence + 1
-                while self.count_sequence > int(self.cant_f):
+                if self.count_sequence > int(self.cant_f):
+                    self.notcontinue_seq = True
+                while self.notcontinue_seq:
                     display.fill((0,0,0))
                     text1 = "Finalizado"
                     surf_text1 = font.render(text1, True, (255,0,0))
-                    display.blit(surf_text1 , (700+1,50+15))     
+                    display.blit(surf_text1 , (5,5))     
                     pygame.display.update()
                     for event in pygame.event.get():
                         if event.type == pygame.MOUSEBUTTONUP:
-                            print("click")
+                            print("click back stream")
                             self.click_back_stream()
                 self.takeExposure(self.exposure_time_photo)
         elif self.stream_on == False and self.first_exposure==False:
@@ -311,7 +315,7 @@ class IndiClient(PyIndi.BaseClient):
             display.blit(surf_text1, (10, 30))
             display.blit(surf_text2, (10, 60))
             if self.sequence==True:
-                text_c_s = str(self.count_sequence)+" de "+str(self.cant_f)
+                text_c_s = str(self.count_sequence)+" de "+str(int(self.cant_f))
                 surf_textc = font.render(text_c_s, True, (255,0,0))
                 display.blit(surf_textc, (10, 90))
             pygame.display.update()
@@ -375,6 +379,7 @@ class IndiClient(PyIndi.BaseClient):
         self.takeExposure(3)
     
     def click_back_stream(self):
+        self.notcontinue_seq
         self.flag = True
         self.sequence = False
         print("click back stream on")
