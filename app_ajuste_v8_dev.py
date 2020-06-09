@@ -195,7 +195,7 @@ class IndiClient(PyIndi.BaseClient):
                         self.connected = False
                         print(self.connected)
                         #self.disconnectServer()
-                    elif 700 <= mouse[0] <= 700+100 and 50 <= mouse[1] <= 50+70:
+                    elif if 0 <= mouse[0] <= 0+100 and 400 <= mouse[1] <= 400+70: 
                         print('secuencia')
                         self.click_sequence()
                     elif self.first_click==False and (130 <= mouse[0] <= 130+540 and 190 <= mouse[1] <= 190+150):
