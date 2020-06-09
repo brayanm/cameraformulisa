@@ -1041,7 +1041,7 @@ if __name__ == '__main__':
                         surf_text_gan_f = FONT.render("Gan Foto", True, (255,0,0))
                         surf_text_exp_f = FONT.render("Exp Foto", True, (255,0,0))
                         surf_text_df = FONT.render("DF Foto", True, (255,0,0))
-                        surf_text_cant_f = FONT.render("Secuencias", True, (255,0,0))
+                        surf_text_cant_f = FONT.render("Secuencia", True, (255,0,0))
                         display.blit(surf_text_cam_p, (300, 30))
                         display.blit(surf_text_gan_s, (30, 60))
                         display.blit(surf_text_exp_s, (250, 60))
